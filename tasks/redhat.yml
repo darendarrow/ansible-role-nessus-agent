@@ -1,0 +1,23 @@
+---
+- name: Set package name as a fact
+  set_fact:
+    data_file_name: NessusAgent-{{ nessus_agent_version }}-es{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm
+
+- debug:
+    var: data_file_name
+    verbosity: 1
+
+- name: Download package to tmp.
+  get_url:
+    url: "{{ nessus_agent_download_page }}/{{ data_file_name }}"
+    dest: "{{ nessus_agent_linux_tmp }}/{{ data_file_name }}"
+    force: no
+  become: no
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Install RPM package.
+  yum:
+    name: "{{ nessus_agent_linux_tmp }}/{{ data_file_name }}"
+    state: present
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"

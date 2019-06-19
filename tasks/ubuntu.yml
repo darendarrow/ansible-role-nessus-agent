@@ -1,0 +1,23 @@
+---
+- name: Set CPU architecture as a fact
+  set_fact:
+    nessus_agent_ubuntu_architecture: "{{ (ansible_architecture == 'x86_64') | ternary('amd64','i386') }}"
+
+- name: Set package name as a fact
+  set_fact:
+    data_file_name: NessusAgent-{{ nessus_agent_version }}-ubuntu1110_{{ nessus_agent_ubuntu_architecture }}.deb
+
+- name: Download package to tmp.
+  get_url:
+    url: "{{ nessus_agent_download_page }}/{{ data_file_name }}"
+    dest: "{{ nessus_agent_linux_tmp }}/{{ data_file_name }}"
+    force: no
+  become: no
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Install DEB package.
+  apt:
+    deb: "{{ nessus_agent_linux_tmp }}/{{ data_file_name }}"
+    state: present
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"

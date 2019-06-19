@@ -1,0 +1,8 @@
+---
+nessus_agent_download_page: http://us-east.manta.joyent.com/daren.darrow@joyent.com/public/tenable/
+nessus_agent_linux_tmp: /tmp
+nessus_agent_version: 7.4.0
+nessus_agent_host: cloud.tenable.com
+nessus_agent_port: 443
+nessus_agent_key: ""
+nessus_agent_group: ""

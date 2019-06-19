@@ -1,0 +1,7 @@
+---
+- name: restart nessusagent
+  service:
+    name: nessusagent
+    state: restarted
+  become: yes
+  when: ansible_system == "Linux"
